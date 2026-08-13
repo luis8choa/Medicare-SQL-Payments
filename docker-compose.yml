@@ -1,0 +1,33 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: medicare_pg
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: medicare
+      POSTGRES_USER: ${POSTGRES_USER:-medicare_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      # Mount data folder so you can COPY CSVs from inside the container:
+      #   \COPY table FROM '/data/raw/your_file.csv' CSV HEADER;
+      - ./data:/data:ro
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: medicare_pgadmin
+    restart: unless-stopped
+    profiles:
+      - pgadmin   # opt-in: docker compose --profile pgadmin up
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@local.dev}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-changeme}
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+
+volumes:
+  pg_data:

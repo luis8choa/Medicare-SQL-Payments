@@ -216,3 +216,17 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# ── Project-specific ──────────────────────────────────────────────────────────
+# Raw CSVs are large and not committed; keep only .gitkeep to track the folder.
+data/raw/*.csv
+data/raw/*.CSV
+data/processed/*.csv
+data/processed/*.CSV
+
+# Jupyter checkpoint directories
+notebooks/.ipynb_checkpoints/
+
+# Environment variables (DB credentials, etc.)
+.env
+.env.local
